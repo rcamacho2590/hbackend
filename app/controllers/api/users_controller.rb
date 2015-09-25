@@ -1,4 +1,5 @@
 class Api::UsersController < ApplicationController
+  skip_before_filter :authenticate_user!, only: [:index, :show, :create]
   before_filter :find_user, only: [:show, :update, :destroy]
 
   def index
@@ -33,6 +34,7 @@ class Api::UsersController < ApplicationController
     params.require(:user).permit(
       :username,
       :full_name,
-      :email)
+      :email,
+      :password)
   end
 end
