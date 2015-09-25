@@ -6,7 +6,8 @@ gem 'rails-api'
 gem 'pg'
 gem 'active_model_serializers'
 gem 'devise'
-gem 'simple_token_authentication' 
+gem 'simple_token_authentication'
+gem 'responders'
 
 group :development, :test do
   gem 'sqlite3'
