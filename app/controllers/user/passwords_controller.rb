@@ -9,12 +9,9 @@ class User::PasswordsController < Devise::PasswordsController
 
   # POST /resource/password
   def create
-    @user = User.send_reset_password_instructions(params[:user])
-    if successfully_sent?(@user)
-      head :status => 200
-    else
-      render :status => 422, :json => { :errors => @user.errors.full_messages }
-    end
+    @user = UserMailer.reset_password_email(params[:user]).deliver
+    code = rand(100000..999999)
+    render :status => 200
   end
 
   # GET /resource/password/edit?reset_password_token=abcdef
