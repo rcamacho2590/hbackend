@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, skip: :registrations, controllers: {
-    sessions: 'user/sessions'
+    sessions: 'user/sessions',
+    passwords: 'user/passwords'
   }
 
   namespace :api do
