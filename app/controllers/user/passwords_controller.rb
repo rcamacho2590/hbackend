@@ -55,8 +55,8 @@ class User::PasswordsController < Devise::PasswordsController
   end
 
   # FOR ALL ACTIONS
-  def find_user_by_email(email)
-    @user = User.find_by_email!(email)
+  def find_user_by_email
+    @user = User.find_by_email!(params[:user][:email])
   end
 
 end
