@@ -1,10 +1,10 @@
 class User::PasswordsController < Devise::PasswordsController
   skip_before_filter :verify_signed_out_user
+  before_filter :find_user_by_email
   respond_to :json
 
   # POST /users/password
   def create
-    find_user_by_email(params[:user][:email])
     @user.send_password_reset(params) if @user
     render  :status => 200,
             :json => { :success => true,
@@ -15,7 +15,6 @@ class User::PasswordsController < Devise::PasswordsController
 
   # POST /users/verify_code
   def verify_code
-    find_user_by_email(params[:user][:email])
     if params[:user][:reset_password_code] == @user.reset_password_code
       render  :status => 200,
               :json => { :success => true,
@@ -31,7 +30,6 @@ class User::PasswordsController < Devise::PasswordsController
 
   # PUT /users/password
   def update
-    find_user_by_email(params[:email])
     if @user.reset_password_sent_at < 2.hours.ago
       render  :status => 422,
               :json => { :success => false,
@@ -47,7 +45,7 @@ class User::PasswordsController < Devise::PasswordsController
                            :info => "Password has been reset.",
                            :user => UserSerializer.new(@user).serializable_hash
                 }
-      #end
+      end
     else
       render :status => 422,
              :json => { :success => false ,
@@ -60,22 +58,5 @@ class User::PasswordsController < Devise::PasswordsController
   def find_user_by_email(email)
     @user = User.find_by_email!(email)
   end
-
-#  def update
-#    self.resource = resource_class.reset_password_by_token(resource_params)
-#    if resource.errors.empty?
-#      resource.unlock_access! if unlockable?(resource)
-#        sign_in(resource_name, resource)
-#        puts resource.inspect
-#        render :status => 200,
-#               :json => { :success => true,
-#                          :info => "password reset",
-#                          :user => UserSessionSerializer.new(resource).serializable_hash
-#               }
-#    else
-#      puts resource.errors.inspect
-#      render :status => 422, :json => { :success => false, :errors => resource.errors }
-#    end
-#  end
 
 end
