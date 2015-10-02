@@ -9,9 +9,32 @@ class User::PasswordsController < Devise::PasswordsController
 
   # POST /resource/password
   def create
-    @user = UserMailer.reset_password_email(params[:user]).deliver
     code = rand(100000..999999)
-    render :status => 200
+    params[:user][:reset_password_code] = code
+
+    User.find_by(email: params[:user][:email]).update(reset_password_code: params[:user][:reset_password_code])
+
+    @user = UserMailer.reset_password_email(params[:user]).deliver
+    render  :status => 200,
+            :json => { :success => true,
+                       :info => "reset password instructions sended"
+            }
+  end
+
+  #get
+  def verify_code
+    puts 'AAAAA'*50
+    puts params
+    puts 'EEEEE'*50
+    @user = User.find_by(email: params[:user][:email])
+    if params[:user][:reset_password_code] == @user.reset_password_code
+      render  :status => 200,
+              :json => { :success => true,
+                         :info => "reset password code valid"
+              }
+    else
+      render :status => 422, :json => { :success => false }
+    end
   end
 
   # GET /resource/password/edit?reset_password_token=abcdef
