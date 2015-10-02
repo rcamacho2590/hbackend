@@ -2,73 +2,80 @@ class User::PasswordsController < Devise::PasswordsController
   skip_before_filter :verify_signed_out_user
   respond_to :json
 
-  # GET /resource/password/new
-  # def new
-  #   super
-  # end
-
-  # POST /resource/password
+  # POST /users/password
   def create
-    code = rand(100000..999999)
-    params[:user][:reset_password_code] = code
-
-    User.find_by(email: params[:user][:email]).update(reset_password_code: params[:user][:reset_password_code])
-
-    @user = UserMailer.reset_password_email(params[:user]).deliver
+    find_user_by_email(params[:user][:email])
+    @user.send_password_reset(params) if @user
     render  :status => 200,
             :json => { :success => true,
-                       :info => "reset password instructions sended"
+                       :info => "Reset password instructions sended.",
+                       :reset_password_code => @user.reset_password_code
             }
   end
 
-  #get
+  # POST /users/verify_code
   def verify_code
-    puts 'AAAAA'*50
-    puts params
-    puts 'EEEEE'*50
-    @user = User.find_by(email: params[:user][:email])
+    find_user_by_email(params[:user][:email])
     if params[:user][:reset_password_code] == @user.reset_password_code
       render  :status => 200,
               :json => { :success => true,
-                         :info => "reset password code valid"
+                         :info => "Reset password code valid."
               }
     else
-      render :status => 422, :json => { :success => false }
+      render  :status => 422,
+              :json => { :success => false,
+                         :info => "Reset password code invalid."
+              }
     end
   end
 
-  # GET /resource/password/edit?reset_password_token=abcdef
-  def edit
-    self.resource = resource_class.find_or_initialize_with_error_by(:reset_password_token, params[:reset_password_token])
-    @user = resource
-  end
-
-  # PUT /resource/password
+  # PUT /users/password
   def update
-    self.resource = resource_class.reset_password_by_token(resource_params)
-    if resource.errors.empty?
-      resource.unlock_access! if unlockable?(resource)
+    find_user_by_email(params[:email])
+    if @user.reset_password_sent_at < 2.hours.ago
+      render  :status => 422,
+              :json => { :success => false,
+                         :info => "Password reset has expired."
+              }
+    elsif @user.update_attributes(params.require(:user).permit(:password, :password_confirmation))
+      resource=@user
+      if resource.errors.empty?
+        resource.unlock_access! if unlockable?(resource)
         sign_in(resource_name, resource)
-        puts resource.inspect
-        render :status => 200,
-               :json => { :success => true,
-                          :info => "password reset",
-                          :user => UserSessionSerializer.new(resource).serializable_hash
-               }
+        render  :status => 200,
+                :json => { :success => true,
+                           :info => "Password has been reset.",
+                           :user => UserSerializer.new(@user).serializable_hash
+                }
+      #end
     else
-      puts resource.errors.inspect
-      render :status => 422, :json => { :success => false, :errors => resource.errors }
+      render :status => 422,
+             :json => { :success => false ,
+                        :errors => @user.errors
+             }
     end
   end
 
-  # protected
+  # FOR ALL ACTIONS
+  def find_user_by_email(email)
+    @user = User.find_by_email!(email)
+  end
 
-  # def after_resetting_password_path_for(resource)
-  #   super(resource)
-  # end
+#  def update
+#    self.resource = resource_class.reset_password_by_token(resource_params)
+#    if resource.errors.empty?
+#      resource.unlock_access! if unlockable?(resource)
+#        sign_in(resource_name, resource)
+#        puts resource.inspect
+#        render :status => 200,
+#               :json => { :success => true,
+#                          :info => "password reset",
+#                          :user => UserSessionSerializer.new(resource).serializable_hash
+#               }
+#    else
+#      puts resource.errors.inspect
+#      render :status => 422, :json => { :success => false, :errors => resource.errors }
+#    end
+#  end
 
-  # The path used after sending reset password instructions
-  # def after_sending_reset_password_instructions_path_for(resource_name)
-  #   super(resource_name)
-  # end
 end

@@ -61,6 +61,8 @@ class Api::UsersController < ApplicationController
       :full_name,
       :email,
       :password,
+      :encrypted_password,
+      :reset_password_sent_at,
       :reset_password_code)
   end
 end
