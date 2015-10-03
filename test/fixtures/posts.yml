@@ -5,9 +5,11 @@ one:
   user_id: 1
   location: MyString
   post_type_id: 1
+  views: 1
 
 two:
   description: MyString
   user_id: 1
   location: MyString
   post_type_id: 1
+  views: 1

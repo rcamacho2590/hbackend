@@ -1,6 +1,6 @@
 class Api::UsersController < ApplicationController
   skip_before_filter :authenticate_user!, only: [:index, :create]
-  before_filter :find_user, only: [:show, :update, :destroy]
+  before_filter :find_user, only: [:show, :update, :destroy, :following , :followers]
   respond_to :json
 
   def index
@@ -65,4 +65,11 @@ class Api::UsersController < ApplicationController
       :reset_password_sent_at,
       :reset_password_code)
   end
+
+  def following
+  end
+
+  def followers
+  end
+
 end
