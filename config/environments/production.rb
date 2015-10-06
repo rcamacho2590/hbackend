@@ -69,8 +69,8 @@ Rails.application.configure do
     port: 587,
     domain: '@example.com',
     authentication: "plain",
-    user_name: 'rafael@softwarecriollo.com',
-    password: '20189107racl*'
+    user_name: ENV["gmail_username"],
+    password: ENV["gmail_password"]
   }
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
