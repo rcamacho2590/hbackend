@@ -56,7 +56,13 @@ class User::PasswordsController < Devise::PasswordsController
 
   # FOR ALL ACTIONS
   def find_user_by_email
-    @user = User.find_by_email!(params[:user][:email])
+    @user = User.find_by_email(params[:user][:email])
+    if @user.nil?
+      render  :status => 404,
+              :json => { :success => false,
+                         :info => "The email address is not registered."
+              }
+    end
   end
 
 end
