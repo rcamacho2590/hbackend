@@ -5,8 +5,7 @@ class Post < ActiveRecord::Base
   has_many :feed
   has_one :post_type
   validates :post_file, presence: true
-  validates :user_id, presence: true
 
-  mount_base64_uploader :post_file, PostFileUploader
+  mount_uploader :post_file, PostFileUploader
 
 end
