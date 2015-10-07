@@ -16,7 +16,7 @@ class Api::PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
-    if post.save
+    if @post.save
       render :status => 200,
              :json => { :success => true,
                         :info => "Post Created",
@@ -27,7 +27,7 @@ class Api::PostsController < ApplicationController
       warden.custom_failure!
       render :status => 442,
              :json => { :success => false,
-                        :info => post.errors
+                        :info => @post.errors
              }
     end
   end
@@ -50,19 +50,43 @@ class Api::PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    render :status => 200,
-           :json => { :success => true,
-                      :info => "Post Deleted",
-                      :post => PostSerializer.new(@post).serializable_hash
-                    }
+    if @post.errors.empty?
+      render :status => 200,
+             :json => { :success => true,
+                        :info => "Post Deleted",
+                        :post => PostSerializer.new(@post).serializable_hash
+                      }
+    else
+      render :status => 422,
+             :json => { :success => false ,
+                        :errors => @post.errors
+             }
+    end
   end
 
   def find_post
     @post = Post.find(params[:id])
+    if @post.nil?
+      render  :status => 404,
+              :json => { :success => false,
+                         :info => "The post is not registered."
+              }
+    end
   end
 
   def find_post_by_user_id
-    @post = Post.find(params[:user_id])
+    @posts = Post.find(params[:user_id])
+    if @posts.errors.empty?
+      render :status => 200,
+             :json => { :success => true,
+                        :posts => @posts
+                      }
+    else
+      render  :status => 404,
+              :json => { :success => false,
+                         :info => "The user has no posts registered."
+              }
+    end
   end
 
   def post_params
@@ -71,7 +95,8 @@ class Api::PostsController < ApplicationController
       :description,
       :location,
       :views,
-      :post_type_id)
+      :post_type_id,
+      :post_file)
   end
 
 

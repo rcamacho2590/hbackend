@@ -36,10 +36,8 @@ class User::PasswordsController < Devise::PasswordsController
                          :info => "Password reset has expired."
               }
     elsif @user.update_attributes(params.require(:user).permit(:password, :password_confirmation))
-      resource=@user
-      if resource.errors.empty?
-        resource.unlock_access! if unlockable?(resource)
-        sign_in(resource_name, resource)
+      if @user.errors.empty?
+        @user.unlock_access! if unlockable?(@user)
         render  :status => 200,
                 :json => { :success => true,
                            :info => "Password has been reset.",
