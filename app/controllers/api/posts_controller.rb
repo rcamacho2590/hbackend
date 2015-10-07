@@ -75,7 +75,7 @@ class Api::PostsController < ApplicationController
   end
 
   def find_post_by_user_id
-    @posts = Post.find(params[:user_id])
+    @posts = Post.find_by_user_id(params[:user_id])
     if @posts.errors.empty?
       render :status => 200,
              :json => { :success => true,
@@ -90,6 +90,7 @@ class Api::PostsController < ApplicationController
   end
 
   def post_params
+    params[:post][:post_file] = StringIO.new(Base64.decode64(params[:post][:post_file]))
     params.require(:post).permit(
       :user_id,
       :description,
