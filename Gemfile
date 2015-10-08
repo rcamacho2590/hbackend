@@ -8,6 +8,10 @@ gem 'active_model_serializers'
 gem 'devise'
 gem 'simple_token_authentication'
 gem 'cancan'
+gem 'carrierwave'
+gem 'carrierwave-base64'
+gem 'carrierwave-dropbox'
+gem "figaro"
 
 group :development, :test do
   gem 'sqlite3'

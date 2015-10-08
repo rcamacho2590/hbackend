@@ -9,6 +9,17 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    resources :users, except: [:new, :edit]
+    resources :users, except: [:new, :edit] do
+      member do
+        get :following, :followers
+      end
+    end
+    #resources :feeds, except: [:new, :edit]
+    #resources :comments, except: [:new, :edit]
+    #resources :likes, except: [:new, :edit]
+    resources :active_relationships, only: [:create, :destroy]
+    resources :posts, except: [:new, :edit]
+    resources :post_types, except: [:new, :edit]
   end
+
 end

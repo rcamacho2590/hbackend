@@ -24,8 +24,8 @@ Rails.application.configure do
     port: 587,
     domain: '@example.com',
     authentication: "plain",
-    user_name: 'rafael@softwarecriollo.com',
-    password: '20189107racl*'
+    user_name: ENV["gmail_username"],
+    password: ENV["gmail_password"]
   }
 
   # Print deprecation notices to the Rails logger.
