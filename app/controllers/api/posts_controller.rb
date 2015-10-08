@@ -4,7 +4,24 @@ class Api::PostsController < ApplicationController
 
   def index
     @posts = Post.all
-    render json: @posts
+    if @posts.nil?
+      render  :status => 404,
+              :json => { :success => false,
+                         :info => "The user has no posts registered."
+              }
+    else
+      if @posts.errors.empty?
+        render :status => 200,
+               :json => { :success => true,
+                          :posts => @posts
+               }
+      else
+        render :status => 442,
+               :json => { :success => false,
+                          :info => @post.errors
+               }
+      end
+    end
   end
 
   def show
@@ -70,21 +87,6 @@ class Api::PostsController < ApplicationController
       render  :status => 404,
               :json => { :success => false,
                          :info => "The post is not registered."
-              }
-    end
-  end
-
-  def find_post_by_user_id
-    @posts = Post.find_by_user_id(params[:user_id])
-    if @posts.errors.empty?
-      render :status => 200,
-             :json => { :success => true,
-                        :posts => @posts
-                      }
-    else
-      render  :status => 404,
-              :json => { :success => false,
-                         :info => "The user has no posts registered."
               }
     end
   end

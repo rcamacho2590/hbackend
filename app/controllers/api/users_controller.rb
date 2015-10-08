@@ -9,9 +9,11 @@ class Api::UsersController < ApplicationController
   end
 
   def show
+    @posts = @user.post
     render :status => 200,
            :json => { :success => true,
-                      :user => UserSerializer.new(@user).serializable_hash
+                      :user => UserSerializer.new(@user).serializable_hash,
+                      :posts => @posts
                     }
   end
 

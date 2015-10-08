@@ -28,16 +28,16 @@ ActiveRecord::Schema.define(version: 20151006171114) do
   add_index "active_relationships", ["follower_id"], name: "index_active_relationships_on_follower_id", using: :btree
 
   create_table "comments", force: true do |t|
-    t.integer  "post_id"
-    t.integer  "user_id"
-    t.string   "description"
+    t.integer  "post_id",     null: false
+    t.integer  "user_id",     null: false
+    t.string   "description", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "feeds", force: true do |t|
-    t.integer  "post_id"
-    t.integer  "user_id"
+    t.integer  "post_id",     null: false
+    t.integer  "user_id",     null: false
     t.string   "description"
     t.integer  "comment_id"
     t.integer  "like_id"
@@ -46,14 +46,14 @@ ActiveRecord::Schema.define(version: 20151006171114) do
   end
 
   create_table "likes", force: true do |t|
-    t.integer  "post_id"
-    t.integer  "user_id"
+    t.integer  "post_id",    null: false
+    t.integer  "user_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "post_types", force: true do |t|
-    t.string   "description"
+    t.string   "description", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
