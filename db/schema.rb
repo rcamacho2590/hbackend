@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20151006171114) do
     t.integer  "views"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "post_file"
+    t.string   "file"
   end
 
   create_table "users", force: true do |t|
