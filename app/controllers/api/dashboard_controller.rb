@@ -3,7 +3,11 @@ respond_to :json
 
   def show
     @user = User.find(params[:id])
-    render :json => @user
+    @posts = Post.following @user.following
+    render :status => 200,
+           :json => { :success => true,
+                      :posts => @posts
+           }
   end
 
 end
