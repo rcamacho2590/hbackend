@@ -7,6 +7,6 @@ class Post < ActiveRecord::Base
   validates :file, presence: true
   validates :user_id, presence: true
 
-  mount_base64_uploader :file, FileUploader
+  mount_uploader :file, FileUploader
 
 end

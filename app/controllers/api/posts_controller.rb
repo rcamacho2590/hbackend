@@ -22,12 +22,20 @@ class Api::PostsController < ApplicationController
                }
       end
     end
+  ensure
+    clean_tempfile
   end
 
   def show
+    @comments = @post.comment
+    @likes = @post.like
+    @user = @post.user
     render :status => 200,
            :json => { :success => true,
-                      :post => PostSerializer.new(@post).serializable_hash
+                      :post => PostSerializer.new(@post).serializable_hash,
+                      :comments => @comments,
+                      :likes => @likes,
+                      :user => UserSerializer.new(@user).serializable_hash
                     }
   end
 
@@ -94,13 +102,46 @@ class Api::PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(
+    the_params = params.require(:post).permit(
       :user_id,
       :description,
       :location,
       :views,
       :post_type_id,
       :file)
+    the_params[:file] = parse_image_data(the_params[:file]) if the_params[:file]
+    the_params
+  end
+
+  def parse_image_data(base64_image)
+    filename = "file"
+
+    in_content_type, encoding, string = base64_image.split(/[:;,]/)[1..3]
+
+    @tempfile = Tempfile.new(filename)
+    @tempfile.binmode
+    @tempfile.write Base64.decode64(string)
+    @tempfile.rewind
+
+    # for security we want the actual content type, not just what was passed in
+    content_type = `file --mime -b #{@tempfile.path}`.split(";")[0]
+
+    # we will also add the extension ourselves based on the above
+    extension = content_type.match(/png|gif|jpeg|jpg|mov|mp4|m4v|3gp/).to_s
+    filename += ".#{extension}" if extension
+
+    ActionDispatch::Http::UploadedFile.new({
+      tempfile: @tempfile,
+      content_type: content_type,
+      filename: filename
+    })
+  end
+
+  def clean_tempfile
+    if @tempfile
+      @tempfile.close
+      @tempfile.unlink
+    end
   end
 
 end

@@ -12,8 +12,6 @@ class User < ActiveRecord::Base
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :post
-  has_many :comment
-  has_many :posts_with_comments, :through => :post, :source => :comment
 
   before_save { self.email = email.downcase }
   before_save { self.username = username.downcase }
@@ -36,11 +34,11 @@ class User < ActiveRecord::Base
   end
 
   def follow(other_user)
-    active_relationship.create(followed_id: other_user.id)
+    active_relationships.create(followed_id: other_user.id)
   end
 
   def unfollow(other_user)
-    active_relationship.find_by(followed_id: other_user.id).destroy
+    active_relationships.find_by(followed_id: other_user.id).destroy
   end
 
   def following?(other_user)

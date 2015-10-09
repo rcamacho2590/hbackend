@@ -10,10 +10,14 @@ class Api::UsersController < ApplicationController
 
   def show
     @posts = @user.post
+    @following = @user.following.count
+    @followers = @user.followers.count
     render :status => 200,
            :json => { :success => true,
                       :user => UserSerializer.new(@user).serializable_hash,
-                      :posts => @posts
+                      :posts => @posts,
+                      :following => @following,
+                      :followers => @followers
                     }
   end
 
@@ -55,6 +59,13 @@ class Api::UsersController < ApplicationController
 
   def find_user
     @user = User.find(params[:id])
+    if @user.nil?
+      render  :status => 404,
+              :json => { :success => false,
+                         :info => "The user is not registered."
+              }
+    end
+
   end
 
   def user_params
@@ -69,9 +80,19 @@ class Api::UsersController < ApplicationController
   end
 
   def following
+    @users = @user.following
+    render :status => 200,
+           :json => { :success => true,
+                      :following => @users
+                    }
   end
 
   def followers
+    @users = @user.followers
+    render :status => 200,
+           :json => { :success => true,
+                      :followers => @users
+                    }
   end
 
 end
