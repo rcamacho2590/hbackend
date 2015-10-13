@@ -1,5 +1,5 @@
 class Like < ActiveRecord::Base
   belongs_to :user
-  has_one :post
+  belongs_to :post, counter_cache: true
 
 end

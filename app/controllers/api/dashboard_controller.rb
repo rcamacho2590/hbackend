@@ -6,7 +6,10 @@ respond_to :json
     @posts = Post.following @user.following
     render :status => 200,
            :json => { :success => true,
-                      :posts => @posts.to_json({:include => [:comment, :like, :user]})
+             :json => @posts.to_json(
+                            :include => [
+                              :user, :comment => { :only => [:id, :description, :created_at], :include => [:user]}
+                            ])
            }
   end
 
