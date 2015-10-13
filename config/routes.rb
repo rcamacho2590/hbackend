@@ -16,8 +16,8 @@ Rails.application.routes.draw do
     end
     resources :dashboard, only: [:show]
     #resources :feeds, except: [:new, :edit]
-    #resources :comments, except: [:new, :edit]
-    #resources :likes, except: [:new, :edit]
+    resources :comments, except: [:new, :edit, :show]
+    resources :likes, except: [:new, :edit, :show]
     resources :active_relationships, only: [:create, :destroy]
     resources :posts, except: [:new, :edit]
     resources :post_types, except: [:new, :edit]
