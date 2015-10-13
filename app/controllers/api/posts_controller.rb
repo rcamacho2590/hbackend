@@ -106,7 +106,6 @@ class Api::PostsController < ApplicationController
       :user_id,
       :description,
       :location,
-      :views,
       :post_type_id,
       :file)
     the_params[:file] = parse_image_data(the_params[:file]) if the_params[:file]
