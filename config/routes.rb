@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       end
     end
     resources :dashboard, only: [:show]
-    #resources :feeds, except: [:new, :edit]
+    resources :feeds, except: [:new, :edit]
     resources :comments, except: [:new, :edit, :show]
     resources :likes, except: [:new, :edit, :show, :update]
     resources :views, only: [:create, :index]

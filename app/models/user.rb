@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
                   format: { with: VALID_EMAIL_REGEX },
                   uniqueness: { case_sensitive: false }
 
+  mount_base64_uploader :avatar, FileUploader
 
   def send_password_reset(params)
     code = rand(100000..999999)

@@ -76,7 +76,8 @@ class Api::UsersController < ApplicationController
       :password,
       :encrypted_password,
       :reset_password_sent_at,
-      :reset_password_code)
+      :reset_password_code,
+      :avatar)
   end
 
   def following

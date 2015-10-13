@@ -9,6 +9,7 @@ gem 'devise'
 gem 'simple_token_authentication'
 gem 'cancan'
 gem 'carrierwave'
+gem 'carrierwave-base64'
 gem 'carrierwave-dropbox'
 gem "figaro"
 
