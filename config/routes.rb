@@ -19,7 +19,11 @@ Rails.application.routes.draw do
     resources :comments, except: [:new, :edit, :show]
     resources :likes, except: [:new, :edit, :show]
     resources :active_relationships, only: [:create, :destroy]
-    resources :posts, except: [:new, :edit]
+    resources :posts, except: [:new, :edit] do
+      member do
+        get :increase_view
+      end
+    end
     resources :post_types, except: [:new, :edit]
   end
 
