@@ -22,8 +22,6 @@ class Api::CommentsController < ApplicationController
                }
       end
     end
-  ensure
-    clean_tempfile
   end
 
   def create

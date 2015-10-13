@@ -1,5 +1,5 @@
 class Api::PostsController < ApplicationController
-  before_filter :find_post, only: [:show, :update, :destroy, :increase_view]
+  before_filter :find_post, only: [:show, :update, :destroy]
   respond_to :json
 
   def index
@@ -69,24 +69,6 @@ class Api::PostsController < ApplicationController
       render :status => 422,
              :json => { :success => false ,
                         :errors => @post.errors
-             }
-    end
-  end
-
-  def increase_view
-    @post.views += 1
-    if @post.save
-      render :status => 200,
-             :json => { :success => true,
-                        :info => "View Updated",
-                        :post => PostSerializer.new(@post).serializable_hash
-             }
-      return
-    else
-      warden.custom_failure!
-      render :status => 442,
-             :json => { :success => false,
-                        :info => @post.errors
              }
     end
   end

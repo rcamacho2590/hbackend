@@ -1,5 +1,5 @@
 class Api::LikesController < ApplicationController
-  before_filter :find_like, only: [:show, :update, :destroy]
+  before_filter :find_like, only: [:show, :destroy]
   respond_to :json
 
   def index
@@ -22,8 +22,6 @@ class Api::LikesController < ApplicationController
                }
       end
     end
-  ensure
-    clean_tempfile
   end
 
   def create

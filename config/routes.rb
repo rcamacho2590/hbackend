@@ -16,14 +16,11 @@ Rails.application.routes.draw do
     end
     resources :dashboard, only: [:show]
     #resources :feeds, except: [:new, :edit]
-    resources :comments, except: [:new, :edit, :show]
+    resources :comments, except: [:new, :edit, :show, :update]
     resources :likes, except: [:new, :edit, :show]
+    resources :views, only: [:create, :index]
     resources :active_relationships, only: [:create, :destroy]
-    resources :posts, except: [:new, :edit] do
-      member do
-        get :increase_view
-      end
-    end
+    resources :posts, except: [:new, :edit]
     resources :post_types, except: [:new, :edit]
   end
 
