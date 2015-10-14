@@ -3,7 +3,7 @@ respond_to :json
 
   def show
     @user = User.find(params[:id])
-    @posts = Post.following @user.following
+    @posts = paginate Post.following(@user.following), per_page: 5
     render :status => 200,
            :json => { :success => true,
              :json => @posts.to_json(

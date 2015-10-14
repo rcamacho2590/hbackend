@@ -3,6 +3,7 @@ ruby '2.1.2'
 
 gem 'rails', '4.1.8'
 gem 'rails-api'
+gem 'grape', '>= 0.10.0'
 gem 'pg'
 gem 'active_model_serializers'
 gem 'devise'
@@ -12,6 +13,8 @@ gem 'carrierwave'
 gem 'carrierwave-base64'
 gem 'carrierwave-dropbox'
 gem "figaro"
+gem 'kaminari'
+gem 'api-pagination'
 
 group :development, :test do
   gem 'sqlite3'
