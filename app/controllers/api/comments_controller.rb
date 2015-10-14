@@ -59,10 +59,10 @@ class Api::CommentsController < ApplicationController
   end
 
   def destroy
-    @feed = Feed.find_by_comment_id(:comment_id => @comment.id)
-    if @feed.nil?
-      @feed.destroy
-    end
+    #@feed = Feed.find_by_comment_id(:comment_id => @comment.id)
+    #if @feed.nil?
+    #  @feed.destroy
+    #end
     @comment.destroy
     if @comment.errors.empty?
       render :status => 200,
