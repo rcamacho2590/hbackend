@@ -14,13 +14,17 @@ Rails.application.routes.draw do
         get :following, :followers
       end
     end
-    resources :dashboard, only: [:show]
+    resources :dashboard, only: [:show, :index]
     resources :feeds, except: [:new, :edit]
     resources :comments, except: [:new, :edit, :show]
     resources :likes, except: [:new, :edit, :show, :update]
     resources :views, only: [:create, :index]
     resources :active_relationships, only: [:create, :destroy]
-    resources :posts, except: [:new, :edit]
+    resources :posts, except: [:new, :edit] do
+      member do
+        put :heroku_test
+      end
+    end
     resources :post_types, except: [:new, :edit]
   end
 

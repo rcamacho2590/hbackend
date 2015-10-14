@@ -1,5 +1,5 @@
 class Api::PostsController < ApplicationController
-  before_filter :find_post, only: [:show, :update, :destroy]
+  before_filter :find_post, only: [:show, :update, :destroy, :heroku_test]
   respond_to :json
 
   def index
@@ -53,6 +53,22 @@ class Api::PostsController < ApplicationController
       render :status => 442,
              :json => { :success => false,
                         :info => @post.errors
+             }
+    end
+  end
+
+  def heroku_test
+    @post.update_attributes(:file => params[:file])
+    if @post.errors.empty?
+      render :status => 200,
+             :json => { :success => true,
+                        :info => "Post Updated",
+                        :post => PostSerializer.new(@post).serializable_hash
+                      }
+    else
+      render :status => 422,
+             :json => { :success => false ,
+                        :errors => @post.errors
              }
     end
   end
