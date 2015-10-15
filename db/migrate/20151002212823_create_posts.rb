@@ -5,7 +5,7 @@ class CreatePosts < ActiveRecord::Migration
       t.integer :user_id
       t.string :location
       t.integer :post_type_id
-      t.integer :views
+      t.integer :views, default: 0
 
       t.timestamps
     end
