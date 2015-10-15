@@ -10,6 +10,6 @@ class Post < ActiveRecord::Base
 
   scope :following, ->(followers) { where(:user_id => followers).order("created_at DESC") }
 
-  #mount_uploader :file, FileUploader
+  mount_uploader :file, FileUploader
 
 end
