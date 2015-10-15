@@ -14,7 +14,7 @@ Rails.application.routes.draw do
         get :following, :followers
       end
     end
-    resources :dashboard, only: [:show]
+    resources :dashboard, only: [:show, :index]
     resources :feeds, except: [:new, :edit]
     resources :comments, except: [:new, :edit, :show]
     resources :likes, except: [:new, :edit, :show, :update]
