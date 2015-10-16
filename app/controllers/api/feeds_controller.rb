@@ -4,7 +4,7 @@ class Api::FeedsController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @feeds = paginate Feed.following(@user.following), per_page: 10
+    @feeds = paginate Feed.user_feeds(@user.post), per_page: 10
     @feeds.each do |feed|
          feed.update_attribute(:read, true)
     end
