@@ -1,8 +1,10 @@
 CarrierWave.configure do |config|
-  config.dropbox_app_key = ENV["app_key"]
-  config.dropbox_app_secret = ENV["app_secret"]
-  config.dropbox_access_token = ENV["access_token"]
-  config.dropbox_access_token_secret = ENV["access_token_secret"]
-  config.dropbox_user_id = ENV["user_id"]
-  config.dropbox_access_type = "app_folder"
+  config.fog_credentials = {
+    provider:              'AWS',                        # required
+    aws_access_key_id:     ENV["AWS_ACCESS_KEY_ID"],                        # required
+    aws_secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"]                        # required
+  }
+  config.fog_directory  = ENV['AWS_BUCKET']                          # required
+  config.fog_public     = false
+  config.fog_attributes = { 'Cache-Control' => "max-age=#{365.day.to_i}" }
 end

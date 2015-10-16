@@ -1,5 +1,5 @@
 class FileUploader < CarrierWave::Uploader::Base
-  storage :dropbox
+  storage :fog
 
   def filename
     "#{secure_token}.#{file.extension}" if original_filename.present?

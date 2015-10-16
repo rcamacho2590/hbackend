@@ -11,7 +11,9 @@ gem 'simple_token_authentication'
 gem 'cancan'
 gem 'carrierwave'
 gem 'carrierwave-base64'
-gem 'carrierwave-dropbox'
+#gem 'carrierwave-dropbox'
+#gem "fog-aws"
+gem "fog", "~> 1.3.1"
 gem "figaro"
 gem 'kaminari'
 gem 'api-pagination'
