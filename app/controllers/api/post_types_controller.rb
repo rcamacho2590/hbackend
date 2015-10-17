@@ -15,7 +15,7 @@ class Api::PostTypesController < ApplicationController
     end
 
     def create
-      @post_type = PostType.new(post_params)
+      @post_type = PostType.new(post_type_params)
       if @post_type.save
         render :status => 200,
                :json => { :success => true,
@@ -33,7 +33,7 @@ class Api::PostTypesController < ApplicationController
     end
 
     def update
-      @post_type.update_attributes(post_params)
+      @post_type.update_attributes(post_type_params)
       if @post_type.errors.empty?
         render :status => 200,
                :json => { :success => true,
@@ -72,5 +72,12 @@ class Api::PostTypesController < ApplicationController
                            :info => "The post is not registered."
                 }
       end
+    end
+
+    private
+
+    def post_type_params
+      params.require(:post_type).permit(
+        :description)
     end
 end

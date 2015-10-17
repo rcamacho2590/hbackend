@@ -8,6 +8,9 @@ class Comment < ActiveRecord::Base
   after_create :create_feed
   before_destroy :delete_feed
 
+  default_scope { order('created_at DESC') }
+
+
   private
 
   def create_feed

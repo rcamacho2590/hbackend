@@ -10,17 +10,10 @@ class Api::CommentsController < ApplicationController
                          :info => "The user has no comments registered."
               }
     else
-      if @comments.errors.empty?
-        render :status => 200,
-               :json => { :success => true,
-                          :comments => @comments
-               }
-      else
-        render :status => 442,
-               :json => { :success => false,
-                          :info => @comment.errors
-               }
-      end
+      render :status => 200,
+             :json => { :success => true,
+                        :comments => @comments
+             }
     end
   end
 

@@ -10,17 +10,10 @@ class Api::PostsController < ApplicationController
                          :info => "The user has no posts registered."
               }
     else
-      if @posts.errors.empty?
-        render :status => 200,
-               :json => { :success => true,
-                          :posts => @posts
-               }
-      else
-        render :status => 442,
-               :json => { :success => false,
-                          :info => @post.errors
-               }
-      end
+      render :status => 200,
+             :json => { :success => true,
+                        :posts => @posts
+             }
     end
   ensure
     clean_tempfile
