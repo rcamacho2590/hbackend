@@ -69,12 +69,6 @@ class Api::CommentsController < ApplicationController
 
   def find_comment
     @comment = Comment.find(params[:id])
-    if @comment.nil?
-      render  :status => 404,
-              :json => { :success => false,
-                         :info => "The comment is not registered."
-              }
-    end
   end
 
   private

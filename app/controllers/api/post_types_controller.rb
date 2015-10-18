@@ -66,12 +66,6 @@ class Api::PostTypesController < ApplicationController
 
     def find_post_type
       @post_type = PostType.find(params[:id])
-      if @post_type.nil?
-        render  :status => 404,
-                :json => { :success => false,
-                           :info => "The post is not registered."
-                }
-      end
     end
 
     private

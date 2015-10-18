@@ -84,12 +84,6 @@ class Api::PostsController < ApplicationController
 
   def find_post
     @post = Post.find(params[:id])
-    if @post.nil?
-      render  :status => 404,
-              :json => { :success => false,
-                         :info => "The post is not registered."
-              }
-    end
   end
 
   private

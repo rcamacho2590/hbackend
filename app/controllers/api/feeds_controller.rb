@@ -68,12 +68,6 @@ class Api::FeedsController < ApplicationController
 
   def find_feed
     @feed = Feed.find(params[:id])
-    if @feed.nil?
-      render  :status => 404,
-              :json => { :success => false,
-                         :info => "The feed is not registered."
-              }
-    end
   end
 
   private

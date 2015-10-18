@@ -53,12 +53,6 @@ class Api::LikesController < ApplicationController
 
   def find_like
     @like = Like.find(params[:id])
-    if @like.nil?
-      render  :status => 404,
-              :json => { :success => false,
-                         :info => "The like is not registered."
-              }
-    end
   end
 
   private
