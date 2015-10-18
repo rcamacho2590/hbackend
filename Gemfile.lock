@@ -214,6 +214,9 @@ GEM
     tilt (2.0.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    uglifier (2.7.2)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -244,3 +247,4 @@ DEPENDENCIES
   simple_token_authentication
   spring
   sqlite3
+  uglifier
