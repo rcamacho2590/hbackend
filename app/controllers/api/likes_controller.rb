@@ -10,17 +10,10 @@ class Api::LikesController < ApplicationController
                          :info => "The user has no likes registered."
               }
     else
-      if @likes.errors.empty?
-        render :status => 200,
-               :json => { :success => true,
-                          :likes => @likes
-               }
-      else
-        render :status => 442,
-               :json => { :success => false,
-                          :info => @like.errors
-               }
-      end
+      render :status => 200,
+             :json => { :success => true,
+                        :likes => @likes
+             }
     end
   end
 

@@ -9,17 +9,10 @@ class Api::ViewsController < ApplicationController
                          :info => "The user has no views registered."
               }
     else
-      if @views.errors.empty?
-        render :status => 200,
-               :json => { :success => true,
-                          :views => @views
-               }
-      else
-        render :status => 442,
-               :json => { :success => false,
-                          :info => @view.errors
-               }
-      end
+      render :status => 200,
+             :json => { :success => true,
+                        :views => @views
+             }
     end
   end
 

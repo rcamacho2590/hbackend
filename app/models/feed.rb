@@ -6,6 +6,8 @@ class Feed < ActiveRecord::Base
   validates :user_id, presence: true
   validates :post_id, presence: true
 
+  default_scope { order('created_at DESC') }
+
   scope :user_feeds, ->(posts) { where(:post_id => posts).order("created_at DESC") }
 
 end

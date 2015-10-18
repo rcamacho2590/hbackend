@@ -10,17 +10,10 @@ class Api::PostsController < ApplicationController
                          :info => "The user has no posts registered."
               }
     else
-      if @posts.errors.empty?
-        render :status => 200,
-               :json => { :success => true,
-                          :posts => @posts
-               }
-      else
-        render :status => 442,
-               :json => { :success => false,
-                          :info => @post.errors
-               }
-      end
+      render :status => 200,
+             :json => { :success => true,
+                        :posts => @posts
+             }
     end
   ensure
     clean_tempfile
@@ -124,25 +117,21 @@ class Api::PostsController < ApplicationController
       :location,
       :post_type_id,
       :file)
-    the_params[:file] = parse_image_data(the_params[:file]) if the_params[:file]
+    the_params[:file] = parse_data(the_params[:file]) if the_params[:file]
     the_params
   end
 
-  def parse_image_data(base64_image)
+  def parse_data(base64_file)
     filename = "file"
 
-    in_content_type, encoding, string = base64_image.split(/[:;,]/)[1..3]
+    content_type, encoding, string = base64_file.split(/[:;,]/)[1..3]
 
     @tempfile = Tempfile.new(filename)
     @tempfile.binmode
     @tempfile.write Base64.decode64(string)
     @tempfile.rewind
 
-    # for security we want the actual content type, not just what was passed in
-    content_type = `file --mime -b #{@tempfile.path}`.split(";")[0]
-
-    # we will also add the extension ourselves based on the above
-    extension = content_type.match(/png|gif|jpeg|jpg|mov|mp4|m4v|3gp/).to_s
+    extension = content_type.match(/png|gif|jpeg|jpg|mov|mp4|m4v|3gp|ogg|ogv|webm|m2v|3g2/).to_s
     filename += ".#{extension}" if extension
 
     ActionDispatch::Http::UploadedFile.new({
