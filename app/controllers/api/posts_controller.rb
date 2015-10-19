@@ -1,5 +1,5 @@
 class Api::PostsController < ApplicationController
-  before_filter :find_post, only: [:show, :update, :destroy]
+  before_filter :find_post, only: [:show, :update, :destroy, :comments, :likes]
   respond_to :json
 
   def index
@@ -20,16 +20,26 @@ class Api::PostsController < ApplicationController
   end
 
   def show
+    render json: @post.to_json(
+                           :include => [
+                             :user, :comment => { :only => [:id, :description, :created_at], :include => [:user => { :only => [:id, :username, :full_name, :email]} ]}
+                           ])
+  end
+
+  def comments
     @comments = @post.comment
+    render json: @comments.to_json(
+                           :include => [
+                             :user => { :only => [:id, :username, :email]}
+                           ])
+  end
+
+  def likes
     @likes = @post.like
-    @user = @post.user
-    render :status => 200,
-           :json => { :success => true,
-                      :post => PostSerializer.new(@post).serializable_hash,
-                      :comments => @comments,
-                      :likes => @likes,
-                      :user => UserSerializer.new(@user).serializable_hash
-                    }
+    render json: @likes.to_json(
+                           :include => [
+                             :user => { :only => [:id, :username, :email]}
+                           ])
   end
 
   def create

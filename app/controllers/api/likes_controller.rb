@@ -1,21 +1,6 @@
 class Api::LikesController < ApplicationController
-  before_filter :find_like, only: [:show, :destroy]
+  before_filter :find_like, only: [:destroy]
   respond_to :json
-
-  def index
-    @likes = Like.all
-    if @likes.nil?
-      render  :status => 404,
-              :json => { :success => false,
-                         :info => "The user has no likes registered."
-              }
-    else
-      render :status => 200,
-             :json => { :success => true,
-                        :likes => @likes
-             }
-    end
-  end
 
   def create
     @like = Like.new(like_params)
