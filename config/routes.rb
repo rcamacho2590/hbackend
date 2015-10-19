@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+
   devise_for :users, skip: :registrations, controllers: {
     sessions: 'user/sessions',
     passwords: 'user/passwords'
@@ -18,16 +19,16 @@ Rails.application.routes.draw do
     end
     resources :dashboard, only: [:show, :index]
     resources :feeds, except: [:new, :edit]
-    resources :comments, except: [:new, :edit, :show]
-    resources :likes, except: [:new, :edit, :show, :update]
+    resources :comments, except: [:new, :edit, :index]
+    resources :likes, except: [:new, :edit, :show, :update, :index]
     resources :views, only: [:create, :index]
     resources :active_relationships, only: [:create, :destroy]
     resources :posts, except: [:new, :edit] do
       member do
-        put :heroku_test
+        get :comments, :likes
       end
     end
-    resources :post_types, except: [:new, :edit]
+    resources :post_types, except: [:new, :edit, :show]
   end
 
 end

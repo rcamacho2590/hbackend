@@ -8,6 +8,7 @@ class Like < ActiveRecord::Base
 
   default_scope { order('created_at DESC') }
 
+
   private
 
   def create_feed

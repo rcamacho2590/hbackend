@@ -59,13 +59,6 @@ class Api::UsersController < ApplicationController
 
   def find_user
     @user = User.find(params[:id])
-    if @user.nil?
-      render  :status => 404,
-              :json => { :success => false,
-                         :info => "The user is not registered."
-              }
-    end
-
   end
 
   def user_params

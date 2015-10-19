@@ -5,7 +5,7 @@ respond_to :json
     @posts = paginate Post.all.order("created_at DESC"), per_page: 5
     render json: @posts.to_json(
                            :include => [
-                             :user, :comment => { :only => [:id, :description, :created_at], :include => [:user]}
+                             :user, :comment => { :only => [:id, :description, :created_at], :include => [:user => { :only => [:id, :username, :full_name, :email]} ]}
                            ])
   end
 
@@ -14,7 +14,7 @@ respond_to :json
     @posts = paginate Post.following(@user.following), per_page: 5
     render json: @posts.to_json(
                            :include => [
-                             :user, :comment => { :only => [:id, :description, :created_at], :include => [:user]}
+                             :user, :comment => { :only => [:id, :description, :created_at], :include => [:user => { :only => [:id, :username, :full_name, :email]} ]}
                            ])
   end
 
