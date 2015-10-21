@@ -1,4 +1,7 @@
 ActiveAdmin.register_page "Dashboard" do
+  controller do
+    skip_before_filter :authenticate_user!
+  end
 
   menu priority: 1, label: proc{ I18n.t("active_admin.dashboard") }
 

@@ -2,7 +2,7 @@ class Api::SearchController < ApplicationController
   respond_to :json
 
   def by_text
-    @posts = Post.find(:all, :conditions => ['first_name LIKE ?', "%#{search}%"])
+    @posts = Post.find(:all, :conditions => ['location LIKE ?', "%#{search}%"])
 
   end
 
