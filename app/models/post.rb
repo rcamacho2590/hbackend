@@ -1,6 +1,7 @@
 class Post < ActiveRecord::Base
   belongs_to :user
   has_many :comment
+#  has_many :recent_comments, -> { order('id DESC').limit(5) }, class_name: 'Comment'
   has_many :like
   has_many :view
   has_many :feed
@@ -11,6 +12,8 @@ class Post < ActiveRecord::Base
   before_destroy :delete_likes
 
   scope :following, ->(followers) { where(:user_id => followers).order("created_at DESC") }
+  scope :liked, ->{ where(:created_at => (Date.today - 7)..(Date.today)).order("likes_count DESC, created_at DESC") }
+  scope :viewed, ->{ where(:created_at => (Date.today - 7)..(Date.today)).order("views_count DESC, created_at DESC") }
 
   mount_uploader :file, FileUploader
 

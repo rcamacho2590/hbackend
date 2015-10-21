@@ -15,6 +15,11 @@ Rails.application.routes.draw do
       end
     end
     resources :dashboard, only: [:show, :index]
+    scope :search, :controller => 'search' do
+      get :most_liked
+      get :most_viewed
+      get :by_text
+    end
     resources :feeds, except: [:new, :edit]
     resources :comments, except: [:new, :edit, :index]
     resources :likes, except: [:new, :edit, :show, :update, :index]
@@ -29,6 +34,5 @@ Rails.application.routes.draw do
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
-  #root to: "dashboard#index"
   ActiveAdmin.routes(self)
 end
