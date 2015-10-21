@@ -2,11 +2,12 @@ class Api::SearchController < ApplicationController
   respond_to :json
 
   def by_text
+    @posts = Post.find(:all, :conditions => ['first_name LIKE ?', "%#{search}%"])
 
   end
 
   def most_liked
-    @posts = Post.all.liked
+    @posts = paginate Post.all.liked, per_page: 5
     render json: @posts.to_json(
                            :include => [
                              :user, :comment => { :only => [:id, :description, :created_at], :include => [:user => { :only => [:id, :username, :full_name, :email]} ]}
@@ -14,7 +15,7 @@ class Api::SearchController < ApplicationController
   end
 
   def most_viewed
-    @posts = Post.all.viewed
+    @posts = paginate Post.all.viewed, per_page: 5
     render json: @posts.to_json(
                            :include => [
                              :user, :comment => { :only => [:id, :description, :created_at], :include => [:user => { :only => [:id, :username, :full_name, :email]} ]}
