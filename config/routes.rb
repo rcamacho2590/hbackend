@@ -29,6 +29,6 @@ Rails.application.routes.draw do
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
-  root to: "admin/dashboard#index"
+  #root to: "dashboard#index"
   ActiveAdmin.routes(self)
 end
