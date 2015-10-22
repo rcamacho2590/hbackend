@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
                   format: { with: VALID_EMAIL_REGEX },
                   uniqueness: { case_sensitive: false }
 
+  scope :match_username, ->(text) { where("username LIKE ?", "%#{text}%") }
+
   mount_base64_uploader :avatar, FileUploader
 
   def send_password_reset(params)

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get :most_liked
       get :most_viewed
       get :by_text
+      get :by_username
     end
     resources :feeds, except: [:new, :edit]
     resources :comments, except: [:new, :edit, :index]
